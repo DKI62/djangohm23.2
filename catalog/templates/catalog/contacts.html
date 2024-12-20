@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.6.22/css/uikit.min.css" />
+</head>
+<body>
+
+    <div class="uk-container uk-margin-top">
+        <a href="javascript:history.back()" class="uk-button uk-button-secondary">Back</a>
+    </div>
+
+    <div class="uk-container uk-margin-top">
+        <h1>Contact Us</h1>
+        <p>If you have any questions, feel free to reach out!</p>
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="uk-margin">
+                <input class="uk-input" type="text" name="name" placeholder="Your Name">
+            </div>
+            <div class="uk-margin">
+                <input class="uk-input" type="email" name="email" placeholder="Your Email">
+            </div>
+            <div class="uk-margin">
+                <textarea class="uk-textarea" rows="5" name="message" placeholder="Your Message"></textarea>
+            </div>
+            <button class="uk-button uk-button-default" type="submit">Send</button>
+        </form>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.6.22/js/uikit.min.js"></script>
+</body>
+</html>

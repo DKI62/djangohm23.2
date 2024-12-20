@@ -1,0 +1,22 @@
+{% extends 'catalog/base.html' %}
+
+{% load static %}
+
+{% block content %}
+<h1>{{ post.title }}</h1>
+
+{% if post.preview %}
+    <img src="{{ post.preview.url }}" alt="{{ post.title }}" width="300" height="auto">
+{% else %}
+    <img src="{% static 'image/default_preview.png' %}" alt="Изображение по умолчанию" width="300" height="auto">
+{% endif %}
+
+<p>{{ post.content }}</p>
+<p>Просмотры: {{ post.views_count }}</p>
+
+<div class="button-group">
+    <a href="{% url 'catalog:blogpost_update' slug=post.slug %}" class="button button-primary">Редактировать</a>
+    <a href="{% url 'catalog:blogpost_delete' slug=post.slug %}" class="button button-danger">Удалить</a>
+</div>
+
+{% endblock %}

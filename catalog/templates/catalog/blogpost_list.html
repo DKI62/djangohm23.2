@@ -1,0 +1,23 @@
+{% extends 'catalog/base.html' %}
+
+{% block content %}
+<h1>Блоги</h1>
+
+<ul>
+    {% for post in blog_posts %}
+        <li>
+            {% if post.slug %}
+                <a href="{% url 'catalog:blogpost_detail' slug=post.slug %}">{{ post.title }}</a>
+            {% else %}
+                <span>{{ post.title }} (без slug)</span>
+            {% endif %}
+            <p>Опубликовано: {{ post.created_at|date:"d M Y, H:i" }}</p>
+        </li>
+    {% empty %}
+        <li>Нет доступных статей.</li>
+    {% endfor %}
+</ul>
+
+<a href="{% url 'catalog:blogpost_create' %}" class="button button-primary">Создать новую статью</a>
+
+{% endblock %}

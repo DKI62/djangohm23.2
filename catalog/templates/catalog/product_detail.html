@@ -1,0 +1,50 @@
+{% extends 'catalog/base.html' %}
+
+{% load media_tags %}
+{% load static %}
+
+{% block title %}{{ product.name }}{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="display-4">{{ product.name }}</h1>
+    <div class="row">
+        <div class="col-md-6">
+            {% if product.image %}
+            <img src="{{ product.image|mymedia }}" alt="{{ product.name }}" class="img-fluid">
+            {% else %}
+            <img src="{% static 'image/icon.webp' %}" alt="Default image" class="img-fluid">
+            {% endif %}
+        </div>
+
+        <div class="col-md-6">
+            <h2 class="h4">Details</h2>
+            <p><strong>Description:</strong> {{ product.description }}</p>
+            <p><strong>Category:</strong> {{ product.category.name }}</p>
+            <p><strong>Price:</strong> {{ product.price }} USD</p>
+            {% if product.get_active_version %}
+            <p><strong>Active Version:</strong> {{ product.get_active_version.version_name }} (v{{ product.get_active_version.version_number }})</p>
+            {% else %}
+            <p><strong>Active Version:</strong> No active version</p>
+            {% endif %}
+            <a href="{% url 'catalog:index' %}" class="btn btn-secondary">Back to Products</a>
+            {% if product.owner == user or perms.catalog.can_edit_product_description and perms.catalog.can_change_product_category %}
+            <a href="{% url 'catalog:product_update' product.pk %}" class="btn btn-warning ">Edit Product</a>
+            {% endif %}
+            <a href="{% url 'catalog:product_delete' product.pk %}" class="btn btn-danger ">Delete Product</a>
+            <h3 class="col-mt-6">Versions control</h3>
+            <ul>
+                {% for version in product.versions.all %}
+                <li>
+                    {{ version.version_name }} (v{{ version.version_number }})
+                    {% if version.is_active %}<strong>(Active)</strong>{% endif %}
+                    <a href="{% url 'catalog:edit_version' product.id version.id %}" class="btn btn-warning ">Edit</a> |
+                    <a href="{% url 'catalog:delete_version' product.id version.id %}" class="btn btn-danger ">Delete</a>
+                </li>
+                {% endfor %}
+            </ul>
+            <a href="{% url 'catalog:add_version' product.id %}" class="btn btn-primary">Add Version</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

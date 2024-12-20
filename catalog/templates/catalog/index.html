@@ -1,0 +1,45 @@
+{% extends 'catalog/base.html' %}
+
+{% load static %}
+
+{% block title %}Home Page{% endblock %}
+
+{% block content %}
+<h1 class="display-4">Welcome to Our Site!</h1>
+<p class="lead">This is the home page. Check out our <a href="{% url 'catalog:contacts' %}" class="btn btn-primary">Contact
+    Page</a>.</p>
+
+<h2 class="mt-5">Product List</h2>
+<a href="{% url 'catalog:product_create' %}" class="btn btn-success mb-3">Add Product</a>
+<a href="{% url 'catalog:category_list' %}" class="btn btn-secondary mb-3">Category list</a>
+<div class="row">
+    {% for object in object_list %}
+    <div class="col-md-4 mb-4">
+        <div class="card">
+            {% if object.image %}
+            <img src="{{ object.image.url }}" alt="{{ object.name }}" class="card-img-top"
+                 style="padding: 3px; margin: 3px;height: 100px; width: 100px; object-fit: cover;">
+            {% else %}
+            <img src="{% static 'image/icon.webp' %}" alt="Default image" class="img-fluid"
+                 style="padding: 3px; margin: 3px;height: 100px; width: 100px; object-fit: cover;">
+            {% endif %}
+            <div class="card-body">
+                <h5 class="card-title">{{ object.name }}</h5>
+                <p class="card-text">{{ object.description|truncatechars:100 }}</p>
+                <p class="card-text"><strong>Price:</strong> {{ object.price }} USD</p>
+
+                {% if object.active_version %}
+                <p><strong>Active Version:</strong> {{ object.active_version.version_name }} (v{{ object.active_version.version_number }})</p>
+                {% else %}
+                <p>No active version.</p>
+                {% endif %}
+
+                <a href="{% url 'catalog:product_detail' object.pk %}" class="btn btn-primary">View Details</a>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <p>No products available.</p>
+    {% endfor %}
+</div>
+{% endblock %}
